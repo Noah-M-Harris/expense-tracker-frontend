@@ -1,9 +1,33 @@
-import React, { useEffect } from "react";
+import { useEffect } from "react";
+
+
+import { useFormik } from 'formik'
+import * as yup from 'yup'
+
+
+// Create our yup Schema: Form Validation
+const formSchema = yup.object({
+  email: yup.string().required('Email is required'),
+  password: yup.string().required('Password is required')
+})
 
 
 
 
 const Login = () => {
+
+  // Formik Form Hook
+  const formik = useFormik({
+    // What we want to be sending to the frontend
+    initialValues: {
+      email: '',
+      password: ''
+    },
+    onSubmit: (values) => {
+
+    },
+    validationSchema: formSchema
+  })
 
   return (
     <section
@@ -32,25 +56,33 @@ const Login = () => {
                   {userAppErr || userServerErr}
                 </div> 
               ) : null} */}
-              <form>
+              <form onSubmit={formik.handleSubmit}>
                 <input
+                  // what we assigned in initialValues
+                  value={formik.values.email}
+                  onChange={formik.handleChange('email')}
+                  onBlur={formik.handleBlur('email')}
                   className="form-control mb-2"
                   type="email"
                   placeholder="E-mail address"
                 />
                 {/* Err */}
-                {/* <div className="text-danger mb-2">
+                <div className="text-danger mb-2">
                   {formik.touched.email && formik.errors.email}
-                </div> */}
+                </div>
                 <input 
+                  // what we assigned in initialValues
+                  value={formik.values.password}
+                  onChange={formik.handleChange('password')}
+                  onBlur={formik.handleBlur('password')}
                   className="form-control mb-2"
                   type="password"
                   placeholder="Password"
                 />
                 {/* Err */}
-                {/* <div className="text-danger mb-2">
+                <div className="text-danger mb-2">
                   {formik.touched.password && formik.errors.password}
-                </div> */}
+                </div>
                 <div>
                   <button
                     type="submit"
