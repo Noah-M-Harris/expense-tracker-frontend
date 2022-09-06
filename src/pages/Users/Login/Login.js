@@ -1,8 +1,12 @@
 import { useEffect } from "react";
+import { useDispatch } from 'react-redux'
 
 
 import { useFormik } from 'formik'
 import * as yup from 'yup'
+
+
+import { loginUserAction } from "../../../redux/slices/users/userSlice";
 
 
 // Create our yup Schema: Form Validation
@@ -16,6 +20,8 @@ const formSchema = yup.object({
 
 const Login = () => {
 
+  const dispatch = useDispatch()
+
   // Formik Form Hook
   const formik = useFormik({
     // What we want to be sending to the frontend
@@ -24,7 +30,7 @@ const Login = () => {
       password: ''
     },
     onSubmit: (values) => {
-
+      dispatch(loginUserAction(values))
     },
     validationSchema: formSchema
   })
