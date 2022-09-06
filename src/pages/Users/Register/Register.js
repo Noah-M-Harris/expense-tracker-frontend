@@ -1,4 +1,6 @@
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
+import { useEffect } from 'react'
+import { useNavigate } from 'react-router-dom'
 
 
 import { useFormik } from 'formik'
@@ -6,6 +8,10 @@ import * as yup from 'yup'
 
 
 import { registerUserAction } from '../../../redux/slices/users/userSlice'
+import DisabledButton from '../../../components/DisabledButton'
+
+
+
 
 
 // Create our yup Schema: Form Validation
@@ -20,6 +26,13 @@ const formSchema = yup.object({
 const Register = () => {
 
   const dispatch = useDispatch()
+  const navigate = useNavigate()
+
+  // Data retrival from store
+  const user = useSelector(state => state?.users)
+
+  // Destructuring user
+  const {userAppErr, userLoading, userServerErr, userAuth} = user
 
   // Formik Form Hook
   const formik = useFormik({
@@ -35,6 +48,14 @@ const Register = () => {
     },
     validationSchema: formSchema
   })
+
+
+    // Redirect
+    useEffect(() => {
+      if(userAuth) {
+        navigate('/')
+      }
+    }, [userAuth])
 
   return (
     <section className="position-relative py-5 overflow-hidden vh-100">
@@ -54,7 +75,14 @@ const Register = () => {
               <form onSubmit={formik.handleSubmit}>
                 <span className="text-muted">New User</span>
                 <h3 className="fw-bold mb-5">Register</h3>
+                
                 {/* Display err here*/}
+                {userAppErr || userServerErr ? (
+                <div class="alert alert-danger" role="alert">
+                  {userAppErr || userServerErr}
+                </div> 
+              ) : null}
+
                 <input
                   // what we assigned in initialValues
                   value={formik.values.firstName}
@@ -107,12 +135,17 @@ const Register = () => {
                 <div className="text-danger mb-2">
                   {formik.touched.password && formik.errors.password}
                 </div>
-                  <button
+
+                <div>
+                  {userLoading ? <DisabledButton /> : 
+                  (<button
                     type="submit"
                     className="btn btn-primary py-2 w-100 mb-4"
                   >
                     Register
-                  </button>
+                  </button>)}
+                </div>
+
               </form>
             </div>
           </div>
