@@ -1,6 +1,40 @@
-import React from "react";
+import { useDispatch } from 'react-redux'
 
-const Register = ({ history }) => {
+
+import { useFormik } from 'formik'
+import * as yup from 'yup'
+
+
+import { registerUserAction } from '../../../redux/slices/users/userSlice'
+
+
+// Create our yup Schema: Form Validation
+const formSchema = yup.object({
+  email: yup.string().required('Email is required'),
+  password: yup.string().required('Password is required'),
+  firstName: yup.string().required('First name is required'),
+  lastName: yup.string().required('Last name is required')
+})
+
+
+const Register = () => {
+
+  const dispatch = useDispatch()
+
+  // Formik Form Hook
+  const formik = useFormik({
+    // What we want to be sending to the frontend
+    initialValues: {
+      email: '',
+      password: '',
+      firstName: '',
+      lastName: ''
+    },
+    onSubmit: (values) => {
+      dispatch(registerUserAction(values))
+    },
+    validationSchema: formSchema
+  })
 
   return (
     <section className="position-relative py-5 overflow-hidden vh-100">
@@ -17,9 +51,62 @@ const Register = ({ history }) => {
           </div>
           <div className="col-12 col-lg-5 ms-auto">
             <div className="p-5 bg-light rounded text-center">
-              <form>
+              <form onSubmit={formik.handleSubmit}>
                 <span className="text-muted">New User</span>
                 <h3 className="fw-bold mb-5">Register</h3>
+                {/* Display err here*/}
+                <input
+                  // what we assigned in initialValues
+                  value={formik.values.firstName}
+                  onChange={formik.handleChange('firstName')}
+                  onBlur={formik.handleBlur('firstName')}
+                  className="form-control mb-2"
+                  type="text"
+                  placeholder="First Name"
+                />
+                {/* Err */}
+                <div className='text-danger mb-2'>
+                  {formik.touched.firstName && formik.errors.firstName}
+                </div>
+                <input
+                  // what we assigned in initialValues
+                  value={formik.values.lastName}
+                  onChange={formik.handleChange('lastName')}
+                  onBlur={formik.handleBlur('lastName')}
+                  className="form-control mb-2"
+                  type="text"
+                  placeholder="Last Name"
+                />
+                {/* Err */}
+                <div className='text-danger mb-2'>
+                  {formik.touched.lastName && formik.errors.lastName}
+                </div>
+                <input
+                  // what we assigned in initialValues
+                  value={formik.values.email}
+                  onChange={formik.handleChange('email')}
+                  onBlur={formik.handleBlur('email')}
+                  className="form-control mb-2"
+                  type="email"
+                  placeholder="E-mail address"
+                />
+                {/* Err */}
+                <div className="text-danger mb-2">
+                  {formik.touched.email && formik.errors.email}
+                </div>
+                <input 
+                  // what we assigned in initialValues
+                  value={formik.values.password}
+                  onChange={formik.handleChange('password')}
+                  onBlur={formik.handleBlur('password')}
+                  className="form-control mb-2"
+                  type="password"
+                  placeholder="Password"
+                />
+                {/* Err */}
+                <div className="text-danger mb-2">
+                  {formik.touched.password && formik.errors.password}
+                </div>
                   <button
                     type="submit"
                     className="btn btn-primary py-2 w-100 mb-4"
