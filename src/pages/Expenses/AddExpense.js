@@ -1,11 +1,43 @@
 import React, { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 
 import moneySVG from "../../img/money.svg";
 
 import DisabledButton from "../../components/DisabledButton";
 
+import { useFormik } from 'formik'
+import * as yup from 'yup'
+
+import { createExpenseAction } from "../../redux/slices/expenses/expensesSlice";
+
+
+
+// Create our yup Schema: Form Validation
+const formSchema = yup.object({
+  title: yup.string().required('Title is required'),
+  description: yup.string().required('Description is required'),
+  amount: yup.number().required('Amount is required')
+})
+
 
 const AddExpense = () => {
+
+  const dispatch = useDispatch()
+
+
+    // Formik Form Hook
+    const formik = useFormik({
+      // What we want to be sending to the frontend
+      initialValues: {
+        title: '',
+        description: '',
+        amount: ''
+      },
+      onSubmit: (values) => {
+        dispatch(createExpenseAction(values))
+      },
+      validationSchema: formSchema
+    })
 
 
   return (
@@ -43,9 +75,9 @@ const AddExpense = () => {
                     />
                   </div>
                   {/* Err */}
-                  {/* <div className="text-danger mb-2">
+                  <div className="text-danger mb-2">
                     {formik.touched.title && formik.errors.title}
-                  </div> */}
+                  </div>
                   <div className="mb-3 input-group">
                     <input
                       value={formik.values.description}
@@ -57,9 +89,9 @@ const AddExpense = () => {
                     />
                   </div>
                   {/* Err */}
-                  {/* <div className="text-danger mb-2">
+                  <div className="text-danger mb-2">
                     {formik.touched.description && formik.errors.description}
-                  </div> */}
+                  </div>
                   <div className="mb-3 input-group">
                     <input
                       value={formik.values.amount}
@@ -71,9 +103,9 @@ const AddExpense = () => {
                     />
                   </div>
                   {/* Err */}
-                  {/* <div className="text-danger mb-2">
+                  <div className="text-danger mb-2">
                     {formik.touched.amount && formik.errors.amount}
-                  </div> */}
+                  </div>
                   {expLoading ? (
                     <DisabledButton />
                   ) : (
@@ -92,3 +124,6 @@ const AddExpense = () => {
 };
 
 export default AddExpense;
+
+
+
