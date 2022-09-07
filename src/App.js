@@ -35,6 +35,7 @@ function App() {
           <Route exact path='/add-income' element={<AddIncome />} />
           <Route exact path='/add-expense' element={<AddExpense />} />
           <Route exact path='/profile' element={<Profile />} />
+          <Route exact path='/expenses' element={<ExpensesList />} />
         </Route>
 
         <Route element={<AdminRoute />} >

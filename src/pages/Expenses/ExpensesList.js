@@ -1,8 +1,25 @@
 import React, { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { Link } from "react-router-dom";
+
+
+import { fetchAllExpenses } from "../../redux/slices/expenses/expensesSlice";
+
+import ContentDetails from '../../components/ContentDetails/ContentDetails'
 
 const ExpensesList = () => {
 
+  const dispatch = useDispatch()
 
+  useEffect(() => {
+    dispatch(fetchAllExpenses())
+  }, [dispatch])
+
+// Get all expenses from the store
+const allExpenses = useSelector(state => state?.expenses)
+
+// Destructuring expenses
+const {expLoading, expAppErr, expServerErr, expenseList} = allExpenses
   return (
     <>
       {expLoading ? (
@@ -69,7 +86,7 @@ const ExpensesList = () => {
                   </tr>
                 </thead>
                 <tbody>
-                  {/* <>
+                  <>
                     {expenseList?.length <= 0 ? (
                       <h2>No Expense Found</h2>
                     ) : (
@@ -77,7 +94,7 @@ const ExpensesList = () => {
                         <ContentDetails item={exp} key={exp?._id} />
                       ))
                     )}
-                  </> */}
+                  </>
                 </tbody>
               </table>
             </div>
@@ -90,12 +107,12 @@ const ExpensesList = () => {
               marginTop: "20px",
             }}
           >
-            {/* {expenseList?.docs?.length > 1 && (
+            {expenseList?.docs?.length > 1 && (
               <AppPagination
                 setPage={setPage}
                 items={expenseList?.totalPages}
               />
-            )} */}
+            )}
           </div>
         </section>
       )}
