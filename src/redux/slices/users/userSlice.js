@@ -13,8 +13,11 @@ export const loginUserAction = createAsyncThunk('user/login', async (payload, {r
         }
     }
     try {
-        // Make HTTP call
+        // Make HTTP call: Data contains user details
         const {data} = await axios.post(usersBaseURL + '/login', payload, config)
+
+        // save user into localStorage
+        localStorage.setItem('userInfo', JSON.stringify(data))
 
         return data
     } catch (error) {
@@ -49,10 +52,16 @@ export const registerUserAction = createAsyncThunk('user/register', async (paylo
     }
 })
 
+
+// Get user from localStorage and set in store
+const userlocalStorage = localStorage.getItem('userInfo') ? JSON.parse(localStorage.getItem('userInfo')) : undefined
+
 // Slice
 const userSlice = createSlice({
     name: 'users',
-    initialState: {},
+    initialState: {
+        userAuth: userlocalStorage
+    },
     extraReducers: (builder) => {
         // Handle Pending State: Login
         builder.addCase(loginUserAction.pending, (state, action) => {
