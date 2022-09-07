@@ -13,7 +13,14 @@ import ExpensesList from './pages/Expenses/ExpensesList'
 import ProtectedRoute from './components/Navigation/ProtectedRoute';
 
 import Profile from './pages/Users/Profile/Profile'
+
 import ProtectedRoute from './components/Navigation/ProtectedRoute';
+
+import NotAdmin from './components/NotAdmin/NotAdmin';
+
+import Dashboard from './pages/Dashboard/Dashboard'
+
+import AdminRoute from './components/Navigation/AdminRoute';
 
 function App() {
   return (
@@ -22,13 +29,18 @@ function App() {
         <Route exact path='/' element={<Home />} />
         <Route exact path='/register' element={<Register />} />
         <Route exact path='/login' element={<Login />} />
+        <Route exact path='/not-found' element={<NotAdmin />} />
 
         <Route element={<ProtectedRoute />} >
           <Route exact path='/add-income' element={<AddIncome />} />
           <Route exact path='/add-expense' element={<AddExpense />} />
           <Route exact path='/profile' element={<Profile />} />
         </Route>
-        
+
+        <Route element={<AdminRoute />} >
+          <Route exact path='/dashboard' element={<Dashboard />} />
+        </Route>
+
       </Routes>
     </Router>
   );

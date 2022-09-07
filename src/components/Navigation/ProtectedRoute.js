@@ -7,7 +7,7 @@ import React from 'react'
 const ProtectedRoute = ({component: Component, ...rest}) => {
 
   // Check to see if user is logged in
-  const user = useSelector(state => state?.user?.userAuth)
+  const user = useSelector(state => state?.users?.userAuth)
   return (
     <Route {...rest} render={() => user ? <Component /> : <Redirect to='/login' />} />
   )
