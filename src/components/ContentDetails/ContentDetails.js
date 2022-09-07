@@ -1,5 +1,4 @@
 import React from "react";
-
 import { useNavigate } from "react-router-dom";
 
 
@@ -20,7 +19,11 @@ const ContentDetails = ({ item, dataType }) => {
         <td className="p-6">{item?.createdAt}</td>
         <td className="p-6">
           <button
-            // onClick={() => navigate(nav, "edit", item)}
+            //onClick={() => navigate(nav, "edit", item)}
+            //onClick={() => nav(`/edit-expense/${item?._id}`)}
+            // {state:} => signature of useNavigate function, state:{expense: item} => refrences an object named expense that refrences the item
+            onClick={() => nav(`/edit-expense}`, {state: {expense: item}})}
+
             className="badge bg-success-light text-success"
           >
             <svg

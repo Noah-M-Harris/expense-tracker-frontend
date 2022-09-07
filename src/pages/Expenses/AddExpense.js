@@ -39,6 +39,12 @@ const AddExpense = () => {
       validationSchema: formSchema
     })
 
+        // Data retrieval from store
+        const expenseData = useSelector(state => state.expense)
+
+        // Destructuring what we retrieved
+        const {expLoading, expenseUpdated, expAppErr, expServerErr} = expenseData
+
 
   return (
     <>

@@ -2,18 +2,23 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 
+import AppPagination from "../../components/AppPagination";
 
 import { fetchAllExpenses } from "../../redux/slices/expenses/expensesSlice";
 
 import ContentDetails from '../../components/ContentDetails/ContentDetails'
 
+
 const ExpensesList = () => {
 
   const dispatch = useDispatch()
 
+  // Keep Track of our pages: Default to Page 1
+  const [page, setPage] = useState(1)
+
   useEffect(() => {
-    dispatch(fetchAllExpenses())
-  }, [dispatch])
+    dispatch(fetchAllExpenses(+page))
+  }, [dispatch, page, setPage])
 
 // Get all expenses from the store
 const allExpenses = useSelector(state => state?.expenses)
@@ -110,7 +115,7 @@ const {expLoading, expAppErr, expServerErr, expenseList} = allExpenses
             {expenseList?.docs?.length > 1 && (
               <AppPagination
                 setPage={setPage}
-                items={expenseList?.totalPages}
+                pageNumber={expenseList?.totalPages}
               />
             )}
           </div>

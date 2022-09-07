@@ -4,11 +4,14 @@ import './App.css';
 import Login from './pages/Users/Login/Login'
 import Register from './pages/Users/Register/Register'
 
+import Navbar from './components/Navigation/Navbar'
+
 import AddIncome from './pages/Income/AddIncome'
 import IncomeList from './pages/Income/IncomeList'
 
 import AddExpense from './pages/Expenses/AddExpense'
 import ExpensesList from './pages/Expenses/ExpensesList'
+import EditExpense from './pages/Expenses/EditExpense'
 
 import ProtectedRoute from './components/Navigation/ProtectedRoute';
 
@@ -25,6 +28,7 @@ import AdminRoute from './components/Navigation/AdminRoute';
 function App() {
   return (
     <Router>
+      <Navbar />
       <Routes>
         <Route exact path='/' element={<Home />} />
         <Route exact path='/register' element={<Register />} />
@@ -36,6 +40,7 @@ function App() {
           <Route exact path='/add-expense' element={<AddExpense />} />
           <Route exact path='/profile' element={<Profile />} />
           <Route exact path='/expenses' element={<ExpensesList />} />
+          <Route exact path='/edit-expense' element={<EditExpense />} />
         </Route>
 
         <Route element={<AdminRoute />} >
