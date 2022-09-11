@@ -22,13 +22,13 @@ const ExpensesList = () => {
   }, [dispatch, page, setPage])
 
 // Get all expenses from the store
-const allExpenses = useSelector(state => state?.expenses)
+const allExpenses = useSelector(state => state.expenses)
 
 // Destructuring expenses
 const {expLoading, expAppErr, expServerErr, expenseList} = allExpenses
   return (
     <>
-    {/* Error Display & Loading  */}
+    {/* Error Display & Loading  */} 
       {expLoading ? (
         <LoadingComponent />
       ) : expAppErr || expServerErr ? (

@@ -1,13 +1,55 @@
 import React, { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 
 import moneySVG from "../../img/money.svg";
 
 import DisabledButton from "../../components/DisabledButton";
+import ErrorDisplayMessage from "../../components/ErrorDisplayMessage";
+
+import { useFormik } from 'formik'
+import * as yup from 'yup'
+
+
+import { createIncomeAction } from "../../redux/slices/income/incomeSlice";
 
 
 
+
+// Create our yup Schema: Form Validation
+const formSchema = yup.object({
+  title: yup.string().required('Title is required'),
+  description: yup.string().required('Description is required'),
+  amount: yup.number().required('Amount is required')
+})
 
 const AddIncome = () => {
+
+
+  const dispatch = useDispatch()
+  const navigate = useNavigate()
+
+  // Formik Form Hook
+  const formik = useFormik({
+    // What we want to be sending to the frontend
+    initialValues: {
+      title: '',
+      description: '',
+      amount: ''
+    },
+    onSubmit: (values) => {
+      dispatch(createIncomeAction(values))
+    },
+    validationSchema: formSchema
+  })
+
+  const incomeData = useSelector(state => state.income)
+
+  const {incLoading, incAppErr, incServerErr, isIncCreated} = incomeData
+
+  useEffect(() => {
+    if(isIncCreated) navigate('/income')
+  }, [isIncCreated, dispatch])
 
   return (
     <>
@@ -28,11 +70,9 @@ const AddIncome = () => {
                   <span className="text-muted">Income</span>
                   <h2 className="mb-4 fw-light">Record New Income</h2>
                   {/* Display income Err */}
-                  {/* {incServerErr || incAppErr ? (
-                    <div className="alert alert-danger" role="alert">
-                      {incServerErr} {incAppErr}
-                    </div>
-                  ) : null} */}
+                  {incServerErr || incAppErr ? (
+                    <ErrorDisplayMessage>{incServerErr} {incAppErr}</ErrorDisplayMessage>
+                  ) : null}
                   <div className="mb-3 input-group">
                     <input
                       value={formik.values.title}
@@ -44,9 +84,9 @@ const AddIncome = () => {
                     />
                   </div>
                   {/* Err */}
-                  {/* <div className="text-danger mb-2">
+                  <div className="text-danger mb-2">
                     {formik.touched.title && formik.errors.title}
-                  </div> */}
+                  </div>
                   <div className="mb-3 input-group">
                     <input
                       value={formik.values.description}
@@ -58,9 +98,9 @@ const AddIncome = () => {
                     />
                   </div>
                   {/* Err */}
-                  {/* <div className="text-danger mb-2">
+                  <div className="text-danger mb-2">
                     {formik.touched.description && formik.errors.description}
-                  </div> */}
+                  </div>
                   <div className="mb-3 input-group">
                     <input
                       value={formik.values.amount}
@@ -72,9 +112,9 @@ const AddIncome = () => {
                     />
                   </div>
                   {/* Err */}
-                  {/* <div className="text-danger mb-2">
+                  <div className="text-danger mb-2">
                     {formik.touched.amount && formik.errors.amount}
-                  </div> */}
+                  </div>
                   {incLoading ? (
                     <DisabledButton />
                   ) : (

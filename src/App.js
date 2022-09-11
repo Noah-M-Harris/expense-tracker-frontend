@@ -8,10 +8,10 @@ import Navbar from './components/Navigation/Navbar'
 
 import AddIncome from './pages/Income/AddIncome'
 import IncomeList from './pages/Income/IncomeList'
+import EditContent from './components/EditContent';
 
 import AddExpense from './pages/Expenses/AddExpense'
 import ExpensesList from './pages/Expenses/ExpensesList'
-import EditExpense from './pages/Expenses/EditExpense'
 
 import ProtectedRoute from './components/Navigation/ProtectedRoute';
 
@@ -37,6 +37,8 @@ function App() {
 
         <Route element={<ProtectedRoute />} >
           <Route exact path='/add-income' element={<AddIncome />} />
+          <Route exact path='/income' element={<IncomeList />} />
+          <Route exact path='/edit' element={<EditContent />} />
           <Route exact path='/add-expense' element={<AddExpense />} />
           <Route exact path='/profile' element={<Profile />} />
           <Route exact path='/expenses' element={<ExpensesList />} />

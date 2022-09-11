@@ -1,14 +1,17 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 
 import moneySVG from "../../img/money.svg";
 
 import DisabledButton from "../../components/DisabledButton";
+import ErrorDisplayMessage from "../../components/ErrorDisplayMessage";
 
 import { useFormik } from 'formik'
 import * as yup from 'yup'
 
 import { createExpenseAction } from "../../redux/slices/expenses/expensesSlice";
+
 
 
 
@@ -23,6 +26,7 @@ const formSchema = yup.object({
 const AddExpense = () => {
 
   const dispatch = useDispatch()
+  const navigate = useNavigate()
 
 
     // Formik Form Hook
@@ -43,7 +47,12 @@ const AddExpense = () => {
         const expenseData = useSelector(state => state.expense)
 
         // Destructuring what we retrieved
-        const {expLoading, expenseUpdated, expAppErr, expServerErr} = expenseData
+        const {expLoading, expenseCreated, expAppErr, expServerErr, isExpCreated} = expenseData
+
+        // Redirect
+        useEffect(() => {
+          if(isExpCreated) navigate('/expenses')
+        }, [dispatch, isExpCreated])
 
 
   return (
@@ -66,9 +75,7 @@ const AddExpense = () => {
                   <h2 className="mb-4 fw-light">Record New Expense</h2>
                   {/* Display income Err */}
                   {expServerErr || expAppErr ? (
-                    <div className="alert alert-danger" role="alert">
-                      {expServerErr} {expAppErr}
-                    </div>
+                    <ErrorDisplayMessage>{expServerErr} {expAppErr}</ErrorDisplayMessage>
                   ) : null}
                   <div className="mb-3 input-group">
                     <input

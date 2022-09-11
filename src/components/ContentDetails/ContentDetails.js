@@ -17,13 +17,13 @@ const ContentDetails = ({ item, dataType }) => {
         <td className="p-6">{item?.title}</td>
         <td className="p-6">{item?.description}</td>
         <td className="p-6">{item?.amount}</td>
-        <td className="p-6">{dateFormatter(item?.createdAt)}</td>
+        <td className="p-6">{item?.createdAt && dateFormatter(item?.createdAt)}</td>
         <td className="p-6">
           <button
             //onClick={() => navigate(nav, "edit", item)}
             //onClick={() => nav(`/edit-expense/${item?._id}`)}
             // {state:} => signature of useNavigate function, state:{expense: item} => refrences an object named expense that refrences the item
-            onClick={() => nav(`/edit-expense}`, {state: {expense: item}})}
+            onClick={() => nav(`/edit`, {state: {item}})}
 
             className="badge bg-success-light text-success"
           >

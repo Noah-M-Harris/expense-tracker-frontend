@@ -1,7 +1,33 @@
 import React, { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { Link } from "react-router-dom";
+
+import AppPagination from "../../components/AppPagination";
+
+import { fetchAllIncome } from "../../redux/slices/income/incomeSlice";
+
+import ContentDetails from '../../components/ContentDetails/ContentDetails'
+import ErrorDisplayMessage from "../../components/ErrorDisplayMessage";
+import LoadingComponent from "../../components/LoadingComponent";
 
 
 const IncomeList = () => {
+
+
+  const dispatch = useDispatch()
+
+  // Keep Track of our pages: Default to Page 1
+  const [page, setPage] = useState(1)
+
+  useEffect(() => {
+    dispatch(fetchAllIncome(+page))
+  }, [dispatch, page, setPage])
+
+// Get all expenses from the store
+const allIncome = useSelector(state => state.income)
+
+// Destructuring expenses
+const {incLoading, incAppErr, incServerErr, incomeList} = allIncome
 
   return (
     <>
@@ -62,17 +88,17 @@ const IncomeList = () => {
                   </tr>
                 </thead>
                 <tbody>
-                  {/* {incomeList?.length <= 0 ? (
+                  {incomeList?.length <= 0 ? (
                     <h2>No Income Found</h2>
                   ) : (
-                    incomeList?.docs?.map(exp => (
+                    incomeList?.docs?.map(inc => (
                       <ContentDetails
                         dataType={dataType}
-                        item={exp}
-                        key={exp?._id}
+                        item={inc}
+                        key={inc?._id}
                       />
                     ))
-                  )} */}
+                  )}
                 </tbody>
               </table>
             </div>
@@ -85,6 +111,12 @@ const IncomeList = () => {
               marginTop: "20px",
             }}
           >
+            {incomeList?.docs?.length > 1 && (
+              <AppPagination
+                setPage={setPage}
+                pageNumber={incomeList?.totalPages}
+              />
+            )}
           </div>
         </section>
       )}

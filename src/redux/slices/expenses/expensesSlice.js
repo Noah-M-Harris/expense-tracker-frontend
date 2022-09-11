@@ -1,8 +1,12 @@
-import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
+import { createAsyncThunk, createSlice, createAction } from '@reduxjs/toolkit'
 import axios from 'axios'
 import expensesBaseURL from '../../../utils/baseURL'
 
+// Action for redirect
+export const resetExpenseCreated = createAction('expense/create/reset')
 
+// Action for redirect
+export const resetExpenseUpdate = createAction('expense/update/reset')
 
 // Create Expense Action
 export const createExpenseAction = createAsyncThunk('expense/create', async (payload, {rejectWithValue, getState, dispatch}) => {
@@ -20,6 +24,9 @@ export const createExpenseAction = createAsyncThunk('expense/create', async (pay
     try {
         // Make HTTP call
         const {data} = await axios.post(expensesBaseURL + '/', payload, config)
+
+        dispatch(resetExpenseCreated())
+
         return data
     } catch (error) {
         if(!error?.response) {
@@ -47,6 +54,9 @@ export const fetchAllExpenses = createAsyncThunk('expense/fetch', async (payload
     try {
         // Make HTTP call
         const {data} = await axios.get(expensesBaseURL + `/?page=${payload}`, config)
+
+        dispatch(resetExpenseUpdate())
+
         return data
     } catch (error) {
         if(!error?.response) {
@@ -96,11 +106,16 @@ const expenseSlice = createSlice({
         builder.addCase(createExpenseAction.pending, (state, action) => {
             state.expLoading = true
         })
+        // reset action
+        builder.addCase(resetExpenseCreated, (state, action) => {
+            state.isExpCreated = true
+        })
         builder.addCase(createExpenseAction.fulfilled, (state, action) => {
             state.expLoading = false
             state.expenseCreated = action?.payload
             state.expAppErr = undefined
             state.expServerErr = undefined
+            state.isExpCreated = false
         })
         builder.addCase(createExpenseAction.rejected, (state,action) => {
             state.expLoading = false
@@ -123,16 +138,21 @@ const expenseSlice = createSlice({
             state.expServerErr = action?.payload?.message
         })
         // Update Expense
-        builder.addCase(updateExpense.pending, (state, action) => {
+        builder.addCase(updateExpenseAction.pending, (state, action) => {
             state.expLoading = true
         })
-        builder.addCase(updateExpense.fulfilled, (state, action) => {
+        // reset action
+        builder.addCase(resetExpenseUpdate, (state, action) => {
+            state.isExpUpdated = true
+        })
+        builder.addCase(updateExpenseAction.fulfilled, (state, action) => {
             state.expLoading = false
             state.expenseUpdated = action?.payload
             state.expAppErr = undefined
             state.expServerErr = undefined
+            state.isExpUpdated = true
         })
-        builder.addCase(updateExpense.rejected, (state,action) => {
+        builder.addCase(updateExpenseAction.rejected, (state,action) => {
             state.expLoading = false
             state.expAppErr = action?.payload?.message
             state.expServerErr = action?.payload?.message

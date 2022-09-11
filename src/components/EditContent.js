@@ -3,12 +3,13 @@ import { useDispatch, useSelector } from "react-redux";
 import { useFormik } from "formik";
 import { useNavigate } from "react-router-dom";
 import * as yup from "yup";
-import moneySVG from "../../img/money.svg";
+import moneySVG from '../img/money.svg'
 
-import DisabledButton from "../../components/DisabledButton";
+import DisabledButton from "./DisabledButton";
 
 
 import { updateExpenseAction } from "../../redux/slices/expenses/expensesSlice";
+import { updateIncomeAction } from "../redux/slices/income/incomeSlice";
 
 
 // Create our yup Schema: Form Validation
@@ -18,7 +19,7 @@ const formSchema = yup.object({
     amount: yup.number().required('Amount is required')
   })
 
-const EditContent = ({location: {state: {expense}} }) => {
+const EditContent = ({location: {state: {item}} }) => {
 
     const dispatch = useDispatch()
 
@@ -27,17 +28,19 @@ const EditContent = ({location: {state: {expense}} }) => {
     const formik = useFormik({
       // What we want to be sending to the frontend
       initialValues: {
-        title: expense?.title,
-        description: expense?.description,
-        amount: expense?.amount
+        title: item?.title,
+        description: item?.description,
+        amount: item?.amount
       },
       onSubmit: (values) => {
           // Adding our id we recieve to the values/data
           const data = {
               ...values,
-              id: expense?._id
+              id: item?._id
           }
-        dispatch(updateExpenseAction(data))
+        item?.type === 'income' 
+          ? dispatch(updateIncomeAction(data))
+          : dispatch(updateExpenseAction(data))
       },
       validationSchema: formSchema
     })
@@ -64,10 +67,10 @@ const EditContent = ({location: {state: {expense}} }) => {
             <div className="p-4 shadow-sm rounded bg-white">
               <form onSubmit={formik.handleSubmit}>
                 <span className="text-muted">
-                  {data?.type === "income" ? " Income" : " Expense"}
+                  {item?.type === "income" ? " Income" : " Expense"}
                 </span>
                 <h2 className="mb-4 fw-light">
-                  {data?.type === "income"
+                  {item?.type === "income"
                     ? " Update Income"
                     : " Update Expense"}
                 </h2>
