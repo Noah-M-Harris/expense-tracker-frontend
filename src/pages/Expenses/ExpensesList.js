@@ -7,7 +7,8 @@ import AppPagination from "../../components/AppPagination";
 import { fetchAllExpenses } from "../../redux/slices/expenses/expensesSlice";
 
 import ContentDetails from '../../components/ContentDetails/ContentDetails'
-
+import ErrorDisplayMessage from "../../components/ErrorDisplayMessage";
+import LoadingComponent from "../../components/LoadingComponent";
 
 const ExpensesList = () => {
 
@@ -27,6 +28,7 @@ const allExpenses = useSelector(state => state?.expenses)
 const {expLoading, expAppErr, expServerErr, expenseList} = allExpenses
   return (
     <>
+    {/* Error Display & Loading  */}
       {expLoading ? (
         <LoadingComponent />
       ) : expAppErr || expServerErr ? (
