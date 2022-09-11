@@ -2,6 +2,7 @@ import React from "react";
 import { useNavigate } from "react-router-dom";
 
 
+import dateFormatter from "../../utils/dateFormatter";
 
 const ContentDetails = ({ item, dataType }) => {
   const nav = useNavigate(); 
@@ -16,7 +17,7 @@ const ContentDetails = ({ item, dataType }) => {
         <td className="p-6">{item?.title}</td>
         <td className="p-6">{item?.description}</td>
         <td className="p-6">{item?.amount}</td>
-        <td className="p-6">{item?.createdAt}</td>
+        <td className="p-6">{dateFormatter(item?.createdAt)}</td>
         <td className="p-6">
           <button
             //onClick={() => navigate(nav, "edit", item)}
