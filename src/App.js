@@ -43,10 +43,11 @@ function App() {
           <Route exact path='/profile' element={<Profile />} />
           <Route exact path='/expenses' element={<ExpensesList />} />
           <Route exact path='/edit-expense' element={<EditExpense />} />
+          <Route exact path='/dashboard' element={<Dashboard />} />
         </Route>
 
         <Route element={<AdminRoute />} >
-          <Route exact path='/dashboard' element={<Dashboard />} />
+          {/* <Route exact path='/dashboard' element={<Dashboard />} /> */}
         </Route>
 
       </Routes>
