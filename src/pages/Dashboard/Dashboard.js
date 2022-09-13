@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 
 import DashboardData from "../Users/Dashboard/DashboardData";
 import LoadingComponent from "../../components/Loading/Loading";
+import ErrorDisplayMessage from '../../components/ErrorDisplayMessage'
 
 
 import { fetchAccountStats } from "../../redux/slices/accountStats/accountStatsSlice";
@@ -28,9 +29,9 @@ const Dashboard = () => {
       {isLoading ? (
         <LoadingComponent />
       ) : isAppErr || isServerErr ? (
-        <div class="alert alert-danger" role="alert">
+        <ErrorDisplayMessage>
           {isServerErr} {isAppErr}
-        </div>
+        </ErrorDisplayMessage>
       ) : (
         <>
           <DashboardData

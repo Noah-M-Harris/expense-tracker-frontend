@@ -1,6 +1,7 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import useCurrencyFormatter from "../../hooks/useCurrencyFormatter";
+import currencyFormatter from "../../../utils/currencyFormatter";
+
 
 
 import DataGrap from "./DataGrap";
@@ -19,9 +20,9 @@ const DashboardData = ({
   netProfit,
 }) => {
   //format curr
-  const formattedTotalExp = useCurrencyFormatter("USD", totalExp);
-  const formattedTotalInc = useCurrencyFormatter("USD", totalInc);
-  const formattedNetProfit = useCurrencyFormatter("USD", netProfit);
+  const formattedTotalExp = currencyFormatter("USD", totalExp);
+  const formattedTotalInc = currencyFormatter("USD", totalInc);
+  const formattedNetProfit = currencyFormatter("USD", netProfit);
   //format date
   return (
     <section class="py-6">
