@@ -1,6 +1,5 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
-import navigate from "../../utils/navigate";
 
 import dateFormatter from "../utils/dateFormatter";
 
@@ -14,7 +13,7 @@ const UserProfileContentDetails = ({ item }) => {
       <td className="p-6">{item?.createdAt && dateFormatter(item?.createdAt)}</td>
       <td className="p-6">
         <button
-          onClick={() => navigate(nav, "edit", item)}
+          onClick={() => nav(`/edit`, {state: {item}})}
           className="badge bg-success-light text-success"
         >
           <svg

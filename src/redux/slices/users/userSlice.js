@@ -98,7 +98,7 @@ export const userProfileAction = createAsyncThunk('user/profile', async (payload
 })
 
 
-// User Profile
+// Update User Profile
 export const updateProfileAction = createAsyncThunk('user/update', async (payload, {rejectWithValue, getState, dispatch}) => {
     // Retrieve user token from store
     const user = getState()?.users?.userAuth?.token
@@ -153,7 +153,7 @@ const userSlice = createSlice({
         })
         // Handle Success State: Login
         builder.addCase(loginUserAction.fulfilled, (state, action) => {
-            state.userAuth = action?.payload
+            state.isRegistered = true
             state.userLoading = false
             state.userAppErr = undefined
             state.userServerErr = undefined
@@ -216,6 +216,7 @@ const userSlice = createSlice({
         // Handle Success State: update Profile
         builder.addCase(updateProfileAction.fulfilled, (state, action) => {
             state.userUpdate = action?.payload
+            state.isEdited = true
             state.Loading = false
             state.AppErr = undefined
             state.ServerErr = undefined

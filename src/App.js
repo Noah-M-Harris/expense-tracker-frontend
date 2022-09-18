@@ -30,6 +30,9 @@ import Dashboard from './pages/Dashboard/Dashboard'
 
 import AdminRoute from './components/Navigation/AdminRoute';
 
+import UpdateProfile from './pages/Users/Profile/UpdateProfile';
+
+
 
 function App() {
   return (
@@ -48,10 +51,11 @@ function App() {
           <Route exact path='/edit' element={<EditContent />} />
           <Route exact path='/add-expense' element={<AddExpense />} />
           <Route exact path='/user-expenses' element={<UserProfileExpList />} />
-          <Route exact path='/profile' element={<Profile />} />
           <Route exact path='/expenses' element={<ExpensesList />} />
           <Route exact path='/edit-expense' element={<EditExpense />} />
           <Route exact path='/dashboard' element={<Dashboard />} />
+          <Route exact path='/profile' element={<Profile />} />
+          <Route exact path='/update-profile' element={<UpdateProfile />} />
         </Route>
 
         <Route element={<AdminRoute />} >

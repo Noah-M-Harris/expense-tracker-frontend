@@ -7,6 +7,9 @@ import { userProfileAction } from "../../../redux/slices/users/userSlice";
 import calculateTransaction from "../../../utils/accountStatistics";
 import DataGrap from '../Dashboard/DataGrap'
 import {UserProfileStats} from './UserProfileStats' 
+import LoadingComponent from "../../../components/LoadingComponent";
+import ErrorDisplayMessage from "../../../components/ErrorDisplayMessage";
+
 
 const Profile = () => {
   const dispatch = useDispatch()
@@ -17,7 +20,7 @@ const Profile = () => {
   }, [dispatch])
 
   const user = useSelector(state => state.users)
-  const {ServerErr, AppErr, Loading, profile} = user
+  const {ServerErr, AppErr, Loading, userAuth, profile} = user
 
 
   // Recieve income statistics
@@ -28,6 +31,9 @@ const Profile = () => {
 
 
   return (
+    <>
+      {Loading ? <LoadingComponent /> : AppErr || ServerErr ? <ErrorDisplayMessage>{AppErr} {ServerErr}</ErrorDisplayMessage> :
+      (
         <section className="py-5">
           <div className="container">
             <div className="position-relative p-8 border rounded-2">
@@ -50,6 +56,9 @@ const Profile = () => {
                   <p className="mb-0"></p>
                   {/* <p className="mb-0">Date Joined: 12-Jan-1999</p> */}
                   <button
+                    onClick={() => navigate('/update-profile', state={
+                      user: userAuth
+                    })}
                     className="btn"
                   >
                     Edit Profile
@@ -93,6 +102,9 @@ const Profile = () => {
             </div>
           </div>
         </section>
+      )}
+    </>
+        
       )}
 
 export default Profile;

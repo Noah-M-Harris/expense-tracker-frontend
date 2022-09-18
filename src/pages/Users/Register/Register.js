@@ -32,7 +32,7 @@ const Register = () => {
   const user = useSelector(state => state?.users)
 
   // Destructuring user
-  const {userAppErr, userLoading, userServerErr, userAuth} = user
+  const {userAppErr, userLoading, userServerErr, isRegistered} = user
 
   // Formik Form Hook
   const formik = useFormik({
@@ -52,10 +52,10 @@ const Register = () => {
 
     // Redirect
     useEffect(() => {
-      if(userAuth) {
+      if(isRegistered) {
         navigate('/')
       }
-    }, [userAuth])
+    }, [isRegistered])
 
   return (
     <section className="position-relative py-5 overflow-hidden vh-100">
