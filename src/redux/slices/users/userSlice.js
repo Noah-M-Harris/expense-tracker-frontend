@@ -30,6 +30,21 @@ export const loginUserAction = createAsyncThunk('user/login', async (payload, {r
 })
 
 
+// Login Action
+export const logoutUserAction = createAsyncThunk('user/logout', async (payload, {rejectWithValue, getState, dispatch}) => {
+    try {
+        localStorage.removeItem('userInfo')
+
+    } catch (error) {
+        if(!error?.response) {
+            throw error
+        }
+
+        return rejectWithValue(error?.repsonse?.data)
+    }
+})
+
+
 
 // Register Action
 export const registerUserAction = createAsyncThunk('user/register', async (payload, {rejectWithValue, getState, dispatch}) => {
@@ -42,6 +57,73 @@ export const registerUserAction = createAsyncThunk('user/register', async (paylo
     try {
         // Make HTTP call
         const {data} = await axios.post(usersBaseURL + '/register', payload, config)
+        return data
+    } catch (error) {
+        if(!error?.response) {
+            throw error
+        }
+
+        return rejectWithValue(error?.repsonse?.data)
+    }
+})
+
+
+// User Profile
+export const userProfileAction = createAsyncThunk('user/profile', async (payload, {rejectWithValue, getState, dispatch}) => {
+    // Retrieve user token from store
+    const user = getState()?.users?.userAuth?.token
+
+    // What we are sending to the server as JSON
+    const config = {
+        headers: {
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${user}`
+        }
+    }
+    try {
+        // Make HTTP call: Data contains user details
+        const {data} = await axios.get(usersBaseURL + '/profile', config)
+
+        // save user into localStorage
+        localStorage.setItem('userInfo', JSON.stringify(data))
+
+        return data
+    } catch (error) {
+        if(!error?.response) {
+            throw error
+        }
+
+        return rejectWithValue(error?.repsonse?.data)
+    }
+})
+
+
+// User Profile
+export const updateProfileAction = createAsyncThunk('user/update', async (payload, {rejectWithValue, getState, dispatch}) => {
+    // Retrieve user token from store
+    const user = getState()?.users?.userAuth?.token
+
+    // What we are sending to the server as JSON
+    const config = {
+        headers: {
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${user}`
+        }
+    }
+    try {
+        // Make HTTP call: Data contains user details
+        const {data} = await axios.put(usersBaseURL + '/update', 
+        {
+            firstName: payload?.firstName, 
+            lastName: payload?.lastName, 
+            email: email?.payload
+        }, 
+        config
+        )
+
+        // save user into localStorage
+        localStorage.setItem('userInfo', JSON.stringify(data))
+
         return data
     } catch (error) {
         if(!error?.response) {
@@ -100,6 +182,49 @@ const userSlice = createSlice({
             state.userLoading = false
             state.userAppErr = action?.payload?.message
             state.userServerErr = action?.error?.message
+        })
+        // Handle Success State: Logout
+        builder.addCase(logoutUserAction.fulfilled, (state, action) => {
+            state.userAuth = undefined
+            state.userLoading = false
+        })
+        // Handle Pending State: userProfile
+        builder.addCase(userProfileAction.pending, (state, action) => {
+            state.Loading = true
+            state.AppErr = undefined
+            state.ServerErr = undefined
+        })
+        // Handle Success State: userProfile
+        builder.addCase(userProfileAction.fulfilled, (state, action) => {
+            state.profile = action?.payload
+            state.Loading = false
+            state.AppErr = undefined
+            state.ServerErr = undefined
+        })
+        // Handle Rejected State: userProfile
+        builder.addCase(userProfileAction.rejected, (state,action) => {
+            state.Loading = false
+            state.AppErr = action?.payload?.message
+            state.ServerErr = action?.error?.message
+        })
+        // Handle Pending State: update Profile
+        builder.addCase(updateProfileAction.pending, (state, action) => {
+            state.Loading = true
+            state.AppErr = undefined
+            state.ServerErr = undefined
+        })
+        // Handle Success State: update Profile
+        builder.addCase(updateProfileAction.fulfilled, (state, action) => {
+            state.userUpdate = action?.payload
+            state.Loading = false
+            state.AppErr = undefined
+            state.ServerErr = undefined
+        })
+        // Handle Rejected State: update Profile
+        builder.addCase(updateProfileAction.rejected, (state,action) => {
+            state.Loading = false
+            state.AppErr = action?.payload?.message
+            state.ServerErr = action?.error?.message
         })
 
     }

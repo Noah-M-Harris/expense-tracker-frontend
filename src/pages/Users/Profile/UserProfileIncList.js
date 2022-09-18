@@ -1,12 +1,33 @@
 import React, { useEffect, useState } from "react";
-
+import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 
+import LoadingComponent from "../../../components/LoadingComponent";
+import ErrorDisplayMessage from "../../../components/ErrorDisplayMessage";
+import UserProfileContentDetails from "../../../components/UserProfileContentDetails";
+
+
+
+import { userProfileAction } from "../../../redux/slices/users/userSlice";
+
+
 const UserProfileIncList = () => {
+  const dispatch = useDispatch()
+  
+
+  useEffect(() => {
+    dispatch(userProfileAction())
+  }, [dispatch])
+
+
+  const user = useSelector(state => state.users)
+  const {ServerErr, AppErr, Loading, profile} = user
 
   return (
     <>
-      <section className="py-6">
+    {Loading ? <LoadingComponent /> : ServerErr || AppErr ? <ErrorDisplayMessage>{ServerErr} {AppErr}</ErrorDisplayMessage> :
+        profile?.expenses?. length <= 0 ? (<h2>No income found</h2>) : (
+          <section className="py-6">
         <div className="container-fluid">
           <div className="position-relative border rounded-2">
             <a className="position-absolute top-0 end-0 mt-4 me-4" href="#"></a>
@@ -53,6 +74,11 @@ const UserProfileIncList = () => {
                 </tr>
               </thead>
               <tbody>
+              <>
+                 {profile?.income?.map(inc => (
+                   <UserProfileContentDetails item={inc} key={inc?._id} />
+                 ))} 
+                </>
               </tbody>
             </table>
           </div>
@@ -66,6 +92,7 @@ const UserProfileIncList = () => {
           }}
         ></div>
       </section>
+        )}
     </>
   );
 };

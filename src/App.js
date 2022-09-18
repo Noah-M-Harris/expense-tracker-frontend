@@ -8,10 +8,15 @@ import Navbar from './components/Navigation/Navbar'
 
 import AddIncome from './pages/Income/AddIncome'
 import IncomeList from './pages/Income/IncomeList'
+import UserProfileIncList from './pages/Users/Profile/UserProfileIncList';
+
+
 import EditContent from './components/EditContent';
 
 import AddExpense from './pages/Expenses/AddExpense'
 import ExpensesList from './pages/Expenses/ExpensesList'
+import UserProfileExpList from './pages/Users/Profile/UserProfileExpList';
+
 
 import ProtectedRoute from './components/Navigation/ProtectedRoute';
 
@@ -24,6 +29,7 @@ import NotAdmin from './components/NotAdmin/NotAdmin';
 import Dashboard from './pages/Dashboard/Dashboard'
 
 import AdminRoute from './components/Navigation/AdminRoute';
+
 
 function App() {
   return (
@@ -38,8 +44,10 @@ function App() {
         <Route element={<ProtectedRoute />} >
           <Route exact path='/add-income' element={<AddIncome />} />
           <Route exact path='/income' element={<IncomeList />} />
+          <Route exact path='/user-income' element={<UserProfileIncList />} />
           <Route exact path='/edit' element={<EditContent />} />
           <Route exact path='/add-expense' element={<AddExpense />} />
+          <Route exact path='/user-expenses' element={<UserProfileExpList />} />
           <Route exact path='/profile' element={<Profile />} />
           <Route exact path='/expenses' element={<ExpensesList />} />
           <Route exact path='/edit-expense' element={<EditExpense />} />

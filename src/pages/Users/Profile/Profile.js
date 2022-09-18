@@ -1,7 +1,31 @@
 import React, { useEffect, useState } from "react";
+import { useSelector, useDispatch } from 'react-redux'
+import { useNavigate } from "react-router-dom";
 
+
+import { userProfileAction } from "../../../redux/slices/users/userSlice";
+import calculateTransaction from "../../../utils/accountStatistics";
+import DataGrap from '../Dashboard/DataGrap'
+import {UserProfileStats} from './UserProfileStats' 
 
 const Profile = () => {
+  const dispatch = useDispatch()
+  const navigate = useNavigate()
+
+  useEffect(() => {
+    dispatch(userProfileAction())
+  }, [dispatch])
+
+  const user = useSelector(state => state.users)
+  const {ServerErr, AppErr, Loading, profile} = user
+
+
+  // Recieve income statistics
+  const incomeRes = profile?.income && calculateTransaction(profile?.income)
+
+  // Recieve expense statistics
+  const expenseRes = profile?.expenses && calculateTransaction(profile?.expenses)
+
 
   return (
         <section className="py-5">
@@ -16,12 +40,15 @@ const Profile = () => {
                 />
                 <div>
                   <h6 className="fw-bold mb-0">
+                    <span>{profile?.firstName} {profile?.lastName}</span>
                     <span className="badge ms-2 bg-primary-light text-primary">
+                      {profile?.expenses?.length + profile?.income?.length}{" "}
                       Records Created
                     </span>
                   </h6>
+                  {<p className="mb-0">{profile?.email}</p>}
                   <p className="mb-0"></p>
-                  <p className="mb-0">Date Joined: 12-Jan-1999</p>
+                  {/* <p className="mb-0">Date Joined: 12-Jan-1999</p> */}
                   <button
                     className="btn"
                   >
@@ -29,16 +56,35 @@ const Profile = () => {
                     <i class="bi bi-pen fs-3 m-3 text-primary"></i>
                   </button>
                 </div>
+                <DataGrap
+                  income={incomeRes?.sumTotal}
+                  expenses={expenseRes?.sumTotal}
+                />
               </div>
 
               <p className="mb-8"> </p>
+
+              <UserProfileStats
+                numOfTransExp={profile?.expenses?.length}
+                avgExp={expenseRes?.avg}
+                totalExp={expenseRes?.sumTotal}
+                minExp={expenseRes?.min}
+                maxExp={expenseRes?.max}
+                numOfTransInc={profile?.income?.length}
+                avgInc={incomeRes?.avg}
+                totalInc={incomeRes?.sumTotal}
+                minInc={incomeRes?.min}
+                maxInc={incomeRes?.max}
+              />
               <div className="d-flex align-items-center justify-content-center">
                 <button
+                  onClick={() => navigate('/user-expenses')}
                   className="btn me-4 w-100 btn-danger d-flex align-items-center justify-content-center"
                 >
                   <span>View Expenses History</span>
                 </button>
                 <button
+                  onClick={() => navigate('/user-income')}
                   className="btn w-100 btn-outline-success d-flex align-items-center justify-content-center"
                 >
                   <span>View Income History</span>
