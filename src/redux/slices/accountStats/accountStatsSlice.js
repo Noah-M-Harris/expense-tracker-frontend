@@ -1,6 +1,6 @@
 import { createAsyncThunk, createSlice, createAction } from '@reduxjs/toolkit'
 import axios from 'axios'
-import statsBaseURL from '../../../utils/baseURL'
+import {statsBaseURL} from '../../../utils/baseURL'
 
 
 
@@ -22,7 +22,7 @@ export const fetchAccountStats = createAsyncThunk('account/fetch', async (payloa
         // Make HTTP call
         const {data} = await axios.get(statsBaseURL, config)
 
-        dispatch(resetExpenseUpdate())
+        return data
 
         return data
     } catch (error) {

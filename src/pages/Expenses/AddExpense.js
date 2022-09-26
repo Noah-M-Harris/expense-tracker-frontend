@@ -12,7 +12,7 @@ import * as yup from 'yup'
 
 import { createExpenseAction } from "../../redux/slices/expenses/expensesSlice";
 
-
+// expLoading : expenseData
 
 
 // Create our yup Schema: Form Validation
@@ -44,7 +44,7 @@ const AddExpense = () => {
     })
 
         // Data retrieval from store
-        const expenseData = useSelector(state => state.expense)
+        const expenseData = useSelector(state => state.expenses)
 
         // Destructuring what we retrieved
         const {expLoading, expenseCreated, expAppErr, expServerErr, isExpCreated} = expenseData

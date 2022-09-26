@@ -5,8 +5,8 @@ import { useNavigate } from "react-router-dom";
 
 import { userProfileAction } from "../../../redux/slices/users/userSlice";
 import calculateTransaction from "../../../utils/accountStatistics";
-import DataGrap from '../Dashboard/DataGrap'
-import {UserProfileStats} from './UserProfileStats' 
+import DataGrap from "../../../components/Dashboard/DataGrap";
+import UserProfileStats from './UserProfileStats' 
 import LoadingComponent from "../../../components/LoadingComponent";
 import ErrorDisplayMessage from "../../../components/ErrorDisplayMessage";
 
@@ -14,6 +14,9 @@ import ErrorDisplayMessage from "../../../components/ErrorDisplayMessage";
 const Profile = () => {
   const dispatch = useDispatch()
   const navigate = useNavigate()
+
+  const [expResult, setExpResult] = useState([])
+  const [incResult, setIncResult] = useState([])
 
   useEffect(() => {
     dispatch(userProfileAction())
@@ -24,10 +27,21 @@ const Profile = () => {
 
 
   // Recieve income statistics
-  const incomeRes = profile?.income && calculateTransaction(profile?.income)
+  //const incomeRes = profile?.income && calculateTransaction(profile?.income)
 
   // Recieve expense statistics
-  const expenseRes = profile?.expenses && calculateTransaction(profile?.expenses)
+  //const expenseRes = profile?.expenses && calculateTransaction(profile?.expenses)
+
+  useEffect(() => {
+    if(profile?.expenses) {
+      const expenses = calculateTransaction(profile?.expenses)
+      setExpResult(expenses)
+    }
+    if(profile?.income) {
+      const income = calculateTransaction(profile?.income)
+      setIncResult(income)
+    }
+  }, [profile?.income, profile?.expenses])
 
 
   return (
@@ -56,18 +70,16 @@ const Profile = () => {
                   <p className="mb-0"></p>
                   {/* <p className="mb-0">Date Joined: 12-Jan-1999</p> */}
                   <button
-                    onClick={() => navigate('/update-profile', state={
-                      user: userAuth
-                    })}
+                    onClick={() => navigate('/update-profile', profile)}
                     className="btn"
                   >
                     Edit Profile
-                    <i class="bi bi-pen fs-3 m-3 text-primary"></i>
+                    <i className="bi bi-pen fs-3 m-3 text-primary"></i>
                   </button>
                 </div>
                 <DataGrap
-                  income={incomeRes?.sumTotal}
-                  expenses={expenseRes?.sumTotal}
+                  income={incResult?.sumTotal}
+                  expenses={expResult?.sumTotal}
                 />
               </div>
 
@@ -75,15 +87,15 @@ const Profile = () => {
 
               <UserProfileStats
                 numOfTransExp={profile?.expenses?.length}
-                avgExp={expenseRes?.avg}
-                totalExp={expenseRes?.sumTotal}
-                minExp={expenseRes?.min}
-                maxExp={expenseRes?.max}
+                avgExp={expResult?.avg}
+                totalExp={expResult?.sumTotal}
+                minExp={expResult?.min}
+                maxExp={expResult?.max}
                 numOfTransInc={profile?.income?.length}
-                avgInc={incomeRes?.avg}
-                totalInc={incomeRes?.sumTotal}
-                minInc={incomeRes?.min}
-                maxInc={incomeRes?.max}
+                avgInc={incResult?.avg}
+                totalInc={incResult?.sumTotal}
+                minInc={incResult?.min}
+                maxInc={incResult?.max}
               />
               <div className="d-flex align-items-center justify-content-center">
                 <button
@@ -93,7 +105,7 @@ const Profile = () => {
                   <span>View Expenses History</span>
                 </button>
                 <button
-                  onClick={() => navigate('/user-income')}
+                  onClick={() => navigate('/user-income', "")}
                   className="btn w-100 btn-outline-success d-flex align-items-center justify-content-center"
                 >
                   <span>View Income History</span>

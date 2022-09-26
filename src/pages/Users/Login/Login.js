@@ -8,7 +8,8 @@ import * as yup from 'yup'
 
 
 import { loginUserAction } from "../../../redux/slices/users/userSlice";
-import { DisabledButton } from '../../../components/DisabledButton'
+/* import { DisabledButton } from '../../../components/DisabledButton' */
+import DisabledButton from "../../../components/DisabledButton";
 
 // Create our yup Schema: Form Validation
 const formSchema = yup.object({
@@ -28,7 +29,7 @@ const Login = () => {
   const user = useSelector(state => state?.users)
 
   // Destructuring user
-  const {userAppErr, userLoading, userServerErr, userAuth} = user
+  const {userAppErr, userLoading, userServerErr, userAuth, isLogin} = user
 
 
   // Formik Form Hook
@@ -46,10 +47,10 @@ const Login = () => {
 
   // Redirect
   useEffect(() => {
-    if(userAuth) {
-      navigate('/profile')
+    if(userAuth) { /* isLogin */
+      navigate('/profile', undefined)
     }
-  }, [userAuth])
+  }, [userAuth, navigate]) /* isLogin */
 
 
   return (

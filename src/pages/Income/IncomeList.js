@@ -11,10 +11,13 @@ import ErrorDisplayMessage from "../../components/ErrorDisplayMessage";
 import LoadingComponent from "../../components/LoadingComponent";
 
 
-const IncomeList = () => {
+const IncomeList = ({ location: { state } }) => {
 
+/* dataType */
 
   const dispatch = useDispatch()
+
+  const dataType = state?.data
 
   // Keep Track of our pages: Default to Page 1
   const [page, setPage] = useState(1)

@@ -1,7 +1,14 @@
-import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
+import { createAsyncThunk, createSlice, createAction } from '@reduxjs/toolkit'
 import axios from 'axios'
-import usersBaseURL from '../../../utils/baseURL'
+import {usersBaseURL} from '../../../utils/baseURL'
 
+// isRegistered
+
+
+// Redirect Action
+const resetUserRegister = createAction('user/register/reset')
+const resetUserLogin = createAction('user/login/reset')
+const resetUserUpdated = createAction('user/update/reset')
 
 
 // Login Action
@@ -14,11 +21,12 @@ export const loginUserAction = createAsyncThunk('user/login', async (payload, {r
     }
     try {
         // Make HTTP call: Data contains user details
-        const {data} = await axios.post(usersBaseURL + '/login', payload, config)
+        const {data} = await axios.post(`${usersBaseURL}/login`, payload, config)
 
         // save user into localStorage
         localStorage.setItem('userInfo', JSON.stringify(data))
 
+        dispatch(resetUserLogin())
         return data
     } catch (error) {
         if(!error?.response) {
@@ -30,7 +38,7 @@ export const loginUserAction = createAsyncThunk('user/login', async (payload, {r
 })
 
 
-// Login Action
+// Logout Action
 export const logoutUserAction = createAsyncThunk('user/logout', async (payload, {rejectWithValue, getState, dispatch}) => {
     try {
         localStorage.removeItem('userInfo')
@@ -44,7 +52,7 @@ export const logoutUserAction = createAsyncThunk('user/logout', async (payload, 
     }
 })
 
-
+/* patch */
 
 // Register Action
 export const registerUserAction = createAsyncThunk('user/register', async (payload, {rejectWithValue, getState, dispatch}) => {
@@ -56,7 +64,8 @@ export const registerUserAction = createAsyncThunk('user/register', async (paylo
     }
     try {
         // Make HTTP call
-        const {data} = await axios.post(usersBaseURL + '/register', payload, config)
+        const {data} = await axios.post(`${usersBaseURL}/`, payload, config)
+        dispatch(resetUserRegister())
         return data
     } catch (error) {
         if(!error?.response) {
@@ -116,7 +125,7 @@ export const updateProfileAction = createAsyncThunk('user/update', async (payloa
         {
             firstName: payload?.firstName, 
             lastName: payload?.lastName, 
-            email: email?.payload
+            email: payload?.email
         }, 
         config
         )
@@ -124,6 +133,7 @@ export const updateProfileAction = createAsyncThunk('user/update', async (payloa
         // save user into localStorage
         localStorage.setItem('userInfo', JSON.stringify(data))
 
+        dispatch(resetUserUpdated())
         return data
     } catch (error) {
         if(!error?.response) {
@@ -153,10 +163,14 @@ const userSlice = createSlice({
         })
         // Handle Success State: Login
         builder.addCase(loginUserAction.fulfilled, (state, action) => {
-            state.isRegistered = true
+            state.userAuth = action?.payload
             state.userLoading = false
             state.userAppErr = undefined
             state.userServerErr = undefined
+            state.isLogin = false
+        })
+        builder.addCase(resetUserLogin, (state, action) => {
+            state.isLogin = true
         })
         // Handle Rejected State: Login
         builder.addCase(loginUserAction.rejected, (state,action) => {
@@ -172,8 +186,10 @@ const userSlice = createSlice({
         })
         // Handle Success State: Register
         builder.addCase(registerUserAction.fulfilled, (state, action) => {
-            state.userAuth = action?.payload
+            //state.userAuth = action?.payload
             state.userLoading = false
+            state.registered = action?.payload
+            state.isRegistered = false
             state.userAppErr = undefined
             state.userServerErr = undefined
         })
@@ -182,6 +198,9 @@ const userSlice = createSlice({
             state.userLoading = false
             state.userAppErr = action?.payload?.message
             state.userServerErr = action?.error?.message
+        })
+        builder.addCase(resetUserRegister, (state, action) => {
+            state.isRegistered = true
         })
         // Handle Success State: Logout
         builder.addCase(logoutUserAction.fulfilled, (state, action) => {
@@ -212,6 +231,9 @@ const userSlice = createSlice({
             state.Loading = true
             state.AppErr = undefined
             state.ServerErr = undefined
+        })
+        builder.addCase(resetUserUpdated, (state,action) => {
+            state.isUpdated = true
         })
         // Handle Success State: update Profile
         builder.addCase(updateProfileAction.fulfilled, (state, action) => {

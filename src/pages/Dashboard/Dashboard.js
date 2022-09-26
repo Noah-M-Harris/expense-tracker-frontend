@@ -2,10 +2,12 @@ import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
 
-import DashboardData from "../Users/Dashboard/DashboardData";
+import DashboardData from '../../components/Dashboard/DashboardData'
 import LoadingComponent from "../../components/Loading/Loading";
 import ErrorDisplayMessage from '../../components/ErrorDisplayMessage'
 
+
+// class
 
 import { fetchAccountStats } from "../../redux/slices/accountStats/accountStatsSlice";
 
@@ -45,7 +47,7 @@ const Dashboard = () => {
             totalInc={inc?.totalInc}
             minInc={inc?.minInc}
             maxInc={inc?.maxInc}
-            netProfit={stats?.profit}
+            netProfit={accountDetails?.profit}
           />
         </>
       )}

@@ -44,7 +44,11 @@ const UpdateProfile = ({location: {state}}) => {
       lastName: state?.user?.lastName
     },
     onSubmit: (values) => {
-      dispatch(updateProfileAction(values))
+      const user = {
+        ...values, 
+        id: state?.state?._id
+      }
+      dispatch(updateProfileAction(user))
     },
     validationSchema: formSchema
   })
@@ -63,7 +67,7 @@ const UpdateProfile = ({location: {state}}) => {
                 <form onSubmit={formik.handleSubmit}>
                   <span className="text-muted">Update Profile</span>
                   <h4 className="mb-4 fw-light">
-                    Hi, {data?.data?.firstname} Do you want to update your
+                    Hi, {state?.state?.firstname} Do you want to update your
                     profile
                   </h4>
 

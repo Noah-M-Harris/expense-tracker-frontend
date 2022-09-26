@@ -1,6 +1,8 @@
-import { Doughnut, Pie } from "react-chartjs-2";
+import { Pie } from "react-chartjs-2";
 
 import React from "react";
+
+// arc
 
 const DataGrap = ({ income, expenses }) => {
   const data = {

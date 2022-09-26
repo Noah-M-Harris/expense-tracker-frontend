@@ -9,6 +9,8 @@ import * as yup from 'yup'
 
 import { registerUserAction } from '../../../redux/slices/users/userSlice'
 import DisabledButton from '../../../components/DisabledButton'
+import SuccessMessage from '../../../components/SuccessMessage'
+
 
 
 
@@ -32,7 +34,7 @@ const Register = () => {
   const user = useSelector(state => state?.users)
 
   // Destructuring user
-  const {userAppErr, userLoading, userServerErr, isRegistered} = user
+  const {userAppErr, userLoading, userServerErr, isRegistered , registered} = user
 
   // Formik Form Hook
   const formik = useFormik({
@@ -51,11 +53,14 @@ const Register = () => {
 
 
     // Redirect
-    useEffect(() => {
+   useEffect(() => {
       if(isRegistered) {
-        navigate('/')
+        navigate('/profile')
       }
-    }, [isRegistered])
+    }, [isRegistered, navigate])
+    /* setTimeout(() => {
+      if(isRegistered) navigate('/profile')
+    }, 3000) */
 
   return (
     <section className="position-relative py-5 overflow-hidden vh-100">
@@ -75,13 +80,18 @@ const Register = () => {
               <form onSubmit={formik.handleSubmit}>
                 <span className="text-muted">New User</span>
                 <h3 className="fw-bold mb-5">Register</h3>
+
+                { /* Success msg */ }
+                {registered && (
+                  <SuccessMessage msg="Register Successfully. You will be redirected soon." />
+                )}
                 
                 {/* Display err here*/}
                 {userAppErr || userServerErr ? (
                 <div class="alert alert-danger" role="alert">
                   {userAppErr || userServerErr}
                 </div> 
-              ) : null}
+                ) : null}
 
                 <input
                   // what we assigned in initialValues
