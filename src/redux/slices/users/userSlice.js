@@ -2,7 +2,7 @@ import { createAsyncThunk, createSlice, createAction } from '@reduxjs/toolkit'
 import axios from 'axios'
 import {usersBaseURL} from '../../../utils/baseURL'
 
-// isRegistered
+// profile
 
 
 // Redirect Action

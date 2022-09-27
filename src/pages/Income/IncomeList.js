@@ -11,13 +11,13 @@ import ErrorDisplayMessage from "../../components/ErrorDisplayMessage";
 import LoadingComponent from "../../components/LoadingComponent";
 
 
-const IncomeList = ({ location: { state } }) => {
+const IncomeList = () => {
 
 /* dataType */
 
   const dispatch = useDispatch()
 
-  const dataType = state?.data
+  /* const dataType = state?.data */
 
   // Keep Track of our pages: Default to Page 1
   const [page, setPage] = useState(1)
@@ -56,13 +56,18 @@ const {incLoading, incAppErr, incServerErr, incomeList} = allIncome
               <table className="table">
                 <thead>
                   <tr className="table-active">
-                    {!dataType && (
+                    {/* {!dataType && (
                       <th scope="col">
                         <button className="btn d-flex align-items-centerr text-uppercase">
                           <small className="text-center">Deposited By</small>
                         </button>
                       </th>
-                    )}
+                    )} */}
+                    <th scope="col">
+                      <button className="btn d-flex align-items-centerr text-uppercase">
+                        <small>Deposited By</small>
+                      </button>
+                    </th>
                     <th scope="col">
                       <button className="btn d-flex align-items-centerr text-uppercase">
                         <small>Title</small>
@@ -91,17 +96,15 @@ const {incLoading, incAppErr, incServerErr, incomeList} = allIncome
                   </tr>
                 </thead>
                 <tbody>
-                  {incomeList?.length <= 0 ? (
-                    <h2>No Income Found</h2>
-                  ) : (
-                    incomeList?.docs?.map(inc => (
-                      <ContentDetails
-                        dataType={dataType}
-                        item={inc}
-                        key={inc?._id}
-                      />
-                    ))
-                  )}
+                  <>
+                    {incomeList?.length <= 0 ? (
+                      <h2>No Income Found</h2>
+                    ) : (
+                      incomeList?.docs?.map(inc => (
+                        <ContentDetails item={inc} key={inc?._id} />
+                      ))
+                    )}
+                  </>
                 </tbody>
               </table>
             </div>

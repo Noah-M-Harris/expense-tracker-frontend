@@ -98,6 +98,9 @@ export const updateIncomeAction = createAsyncThunk('income/update', async (paylo
 })
 
 
+/* incLoading, incAppErr, incServerErr, incomeList */
+
+
 const incomeSlice = createSlice({
     name: 'income',
     initialState: {
@@ -130,7 +133,7 @@ const incomeSlice = createSlice({
         })
         builder.addCase(fetchAllIncome.fulfilled, (state, action) => {
             state.incLoading = false
-            state.incenseList = action?.payload
+            state.incomeList = action?.payload
             state.incAppErr = undefined
             state.incServerErr = undefined
         })

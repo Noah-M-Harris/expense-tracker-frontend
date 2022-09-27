@@ -1,4 +1,6 @@
 import { Pie } from "react-chartjs-2";
+import {Chart, ArcElement} from 'chart.js'
+import 'chart.js/auto'
 
 import React from "react";
 

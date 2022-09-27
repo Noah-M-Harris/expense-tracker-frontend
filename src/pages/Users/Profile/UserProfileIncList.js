@@ -5,10 +5,12 @@ import { Link } from "react-router-dom";
 import LoadingComponent from "../../../components/LoadingComponent";
 import ErrorDisplayMessage from "../../../components/ErrorDisplayMessage";
 import UserProfileContentDetails from "../../../components/UserProfileContentDetails";
+import ContentDetails from "../../../components/ContentDetails/ContentDetails";
 
 
 
 import { userProfileAction } from "../../../redux/slices/users/userSlice";
+
 
 
 const UserProfileIncList = () => {
@@ -76,7 +78,7 @@ const UserProfileIncList = () => {
               <tbody>
               <>
                  {profile?.income?.map(inc => (
-                   <UserProfileContentDetails item={inc} key={inc?._id} />
+                   <ContentDetails item={inc} key={inc?._id} />
                  ))} 
                 </>
               </tbody>

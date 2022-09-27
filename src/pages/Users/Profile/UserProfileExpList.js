@@ -5,7 +5,7 @@ import { Link } from "react-router-dom";
 import LoadingComponent from "../../../components/LoadingComponent";
 import ErrorDisplayMessage from "../../../components/ErrorDisplayMessage";
 import UserProfileContentDetails from "../../../components/UserProfileContentDetails";
-
+import ContentDetails from "../../../components/ContentDetails/ContentDetails";
 
 
 import { userProfileAction } from "../../../redux/slices/users/userSlice";
@@ -77,7 +77,7 @@ const UserProfileExpList = () => {
               <tbody>
                 <>
                  {profile?.expenses?.map(exp => (
-                   <UserProfileContentDetails item={exp} key={exp?._id} />
+                   <ContentDetails item={exp} key={exp?._id} />
                  ))} 
                 </>
               </tbody>

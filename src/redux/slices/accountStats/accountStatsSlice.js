@@ -3,7 +3,7 @@ import axios from 'axios'
 import {statsBaseURL} from '../../../utils/baseURL'
 
 
-
+// accountDetails
 
 // View Expense Reports (fetchAll) Action
 export const fetchAccountStats = createAsyncThunk('account/fetch', async (payload, {rejectWithValue, getState, dispatch}) => {
@@ -20,7 +20,7 @@ export const fetchAccountStats = createAsyncThunk('account/fetch', async (payloa
     }
     try {
         // Make HTTP call
-        const {data} = await axios.get(statsBaseURL, config)
+        const {data} = await axios.get(statsBaseURL + '/account-statistics', config)
 
         return data
 

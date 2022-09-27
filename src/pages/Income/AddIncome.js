@@ -16,6 +16,8 @@ import { createIncomeAction } from "../../redux/slices/income/incomeSlice";
 
 
 
+
+
 // Create our yup Schema: Form Validation
 const formSchema = yup.object({
   title: yup.string().required('Title is required'),
@@ -45,11 +47,11 @@ const AddIncome = () => {
 
   const incomeData = useSelector(state => state.income)
 
-  const {incLoading, incAppErr, incServerErr, isIncCreated} = incomeData
+  const {incLoading, incAppErr, incServerErr, isIncCreated, incomeCreated} = incomeData
 
   useEffect(() => {
     if(isIncCreated) navigate('/income')
-  }, [isIncCreated, dispatch])
+  }, [dispatch, isIncCreated])
 
   return (
     <>

@@ -29,13 +29,13 @@ const Home = () => {
                     >
                       Track your performance
                     </Link>
-                    <a
+                    {/* <a
                       target="_blank"
                       className="btn btn-secondary mb-2 mb-sm-0"
                       href="https://www.youtube.com/channel/UCvu6J9q1AM6q4xysGqAvVyw"
                     >
                       Video Tutorial
-                    </a>
+                    </a> */}
                   </div>
                 </div>
                 <h1 className="text-danger">Admin Login </h1>

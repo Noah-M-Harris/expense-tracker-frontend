@@ -7,7 +7,6 @@ import LoadingComponent from "../../components/Loading/Loading";
 import ErrorDisplayMessage from '../../components/ErrorDisplayMessage'
 
 
-// class
 
 import { fetchAccountStats } from "../../redux/slices/accountStats/accountStatsSlice";
 
@@ -37,16 +36,16 @@ const Dashboard = () => {
       ) : (
         <>
           <DashboardData
-            numOfTransExp={exp?.totalRecords}
-            avgExp={exp?.averageExp}
-            totalExp={exp?.totalExp}
-            minExp={exp?.minExp}
-            maxExp={exp?.maxExp}
-            numOfTransInc={inc?.totalRecords}
-            avgInc={inc?.averageInc}
-            totalInc={inc?.totalInc}
-            minInc={inc?.minInc}
-            maxInc={inc?.maxInc}
+            numOfTransExp={exp?.totalExpenseRecords}
+            avgExp={exp?.avgExpense}
+            totalExp={exp?.totalExpenses}
+            minExp={exp?.minExpense}
+            maxExp={exp?.maxExpense}
+            numOfTransInc={inc?.totalIncomeRecords}
+            avgInc={inc?.avgIncome}
+            totalInc={inc?.totalIncome}
+            minInc={inc?.minIncome}
+            maxInc={inc?.maxIncome}
             netProfit={accountDetails?.profit}
           />
         </>
