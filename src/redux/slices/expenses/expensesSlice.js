@@ -26,7 +26,7 @@ export const createExpenseAction = createAsyncThunk('expense/create', async (pay
     }
     try {
         // Make HTTP call
-        const {data} = await axios.post(expensesBaseURL + '/', payload, config)
+        const {data} = await axios.post(`${expensesBaseURL}/`, payload, config) /* expensesBaseURL + '/' */
 
         dispatch(resetExpenseCreated())
 
@@ -56,7 +56,7 @@ export const fetchAllExpenses = createAsyncThunk('expense/fetch', async (payload
     }
     try {
         // Make HTTP call
-        const {data} = await axios.get(expensesBaseURL + `/?page=${payload}`, config)
+        const {data} = await axios.get(`${expensesBaseURL}/?page=${payload}`, config) /* expensesBaseURL + `/?page=${payload}` */
 
         dispatch(resetExpenseUpdate())
 
@@ -87,7 +87,7 @@ export const updateExpenseAction = createAsyncThunk('expense/update', async (pay
     }
     try {
         // Make HTTP call
-        const {data} = await axios.put(expensesBaseURL + `/${payload?.id}`, payload, config)
+        const {data} = await axios.put(`${expensesBaseURL}/${payload?.id}`, payload, config) /* expensesBaseURL + `/${payload?.id}` */
         return data
     } catch (error) {
         if(!error?.response) {

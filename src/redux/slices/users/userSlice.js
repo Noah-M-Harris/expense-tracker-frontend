@@ -91,7 +91,7 @@ export const userProfileAction = createAsyncThunk('user/profile', async (payload
     }
     try {
         // Make HTTP call: Data contains user details
-        const {data} = await axios.get(usersBaseURL + '/profile', config)
+        const {data} = await axios.get(`${usersBaseURL}/profile`, config) /* usersBaseURL + '/profile' */
 
         // save user into localStorage
         localStorage.setItem('userInfo', JSON.stringify(data))
@@ -121,7 +121,7 @@ export const updateProfileAction = createAsyncThunk('user/update', async (payloa
     }
     try {
         // Make HTTP call: Data contains user details
-        const {data} = await axios.put(usersBaseURL + '/update', 
+        const {data} = await axios.put(`{usersBaseURL}/update`, 
         {
             firstName: payload?.firstName, 
             lastName: payload?.lastName, 
@@ -130,6 +130,7 @@ export const updateProfileAction = createAsyncThunk('user/update', async (payloa
         config
         )
 
+        // usersBaseURL + '/update'
         // save user into localStorage
         localStorage.setItem('userInfo', JSON.stringify(data))
 
