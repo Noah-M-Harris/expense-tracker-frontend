@@ -23,8 +23,7 @@ export const fetchAccountStats = createAsyncThunk('account/fetch', async (payloa
         const {data} = await axios.get(`${statsBaseURL}/account-statistics`, config) /* statsBaseURL + '/account-statistics' */
 
         return data
-
-        return data
+        
     } catch (error) {
         if(!error?.response) {
             throw error

@@ -5,6 +5,7 @@ import {usersBaseURL} from '../../../utils/baseURL'
 // profile
 
 
+
 // Redirect Action
 const resetUserRegister = createAction('user/register/reset')
 const resetUserLogin = createAction('user/login/reset')
@@ -21,7 +22,7 @@ export const loginUserAction = createAsyncThunk('user/login', async (payload, {r
     }
     try {
         // Make HTTP call: Data contains user details
-        const {data} = await axios.post(`${usersBaseURL}/login`, payload, config)
+        const {data} = await axios.post(`${usersBaseURL}/login`, payload, config)  /* `${usersBaseURL}/login` */
 
         // save user into localStorage
         localStorage.setItem('userInfo', JSON.stringify(data))
@@ -121,7 +122,7 @@ export const updateProfileAction = createAsyncThunk('user/update', async (payloa
     }
     try {
         // Make HTTP call: Data contains user details
-        const {data} = await axios.put(`{usersBaseURL}/update`, 
+        const {data} = await axios.put(`${usersBaseURL}/update`, 
         {
             firstName: payload?.firstName, 
             lastName: payload?.lastName, 
