@@ -69,13 +69,13 @@ const Profile = () => {
                   {<p className="mb-0">{profile?.email}</p>}
                   <p className="mb-0"></p>
                   {/* <p className="mb-0">Date Joined: 12-Jan-1999</p> */}
-                  <button
+                  {/* <button
                     onClick={() => navigate('/update-profile', profile)}
                     className="btn"
                   >
                     Edit Profile
                     <i className="bi bi-pen fs-3 m-3 text-primary"></i>
-                  </button>
+                  </button> */}
                 </div>
                 <DataGrap
                   income={incResult?.sumTotal}
